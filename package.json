@@ -1,0 +1,38 @@
+{
+  "name": "e2e-pms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:all": "npx playwright test",
+    "test:aspek": "npx playwright test tests/aspekmenu",
+    "test:auth": "npx playwright test tests/authentication",
+    "test:karyawan": "npx playwright test tests/karyawanmenu",
+    "test:pengaturan": "npx playwright test tests/pengaturan"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Raja-Derek/e2e-pms.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Raja-Derek/e2e-pms/issues"
+  },
+  "homepage": "https://github.com/Raja-Derek/e2e-pms#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^24.10.1",
+    "allure-playwright": "^3.4.3",
+    "dotenv": "^17.2.3",
+    "playwright-qase-reporter": "^2.1.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  }
+}

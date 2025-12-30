@@ -1,0 +1,15 @@
+{
+  "cookies": [
+    {
+      "name": "__Secure-better-auth.session_token",
+      "value": "BxOLhDQbEoHUznlEtuNyjSAJneTWjuGy.TuHTkngcFqph4ZDXqsa4zj2RaI5aneu%2Fn4CjiNkx7DM%3D",
+      "domain": "dev-pms.lintascakracipta.com",
+      "path": "/",
+      "expires": 1767406184.361975,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
+}
