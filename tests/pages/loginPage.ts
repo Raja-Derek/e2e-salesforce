@@ -14,7 +14,7 @@ export class LoginPage {
   async navigateToLoginPage() {
     await this.page.goto(this.loginURL);
   }
-  
+
   async logout(karyawanName: string) {
     await this.page.getByRole('button', { name: karyawanName }).click();
     await this.page.getByRole('button', { name: 'Keluar' }).click();
@@ -25,9 +25,11 @@ export class LoginPage {
   async login(data: LoginData) {
     await test.step('User navigate to login page', async () => {
       await this.page.goto(this.loginURL);
+      await expect(this.page).toHaveURL(this.loginURL);
     })
 
     await test.step('User submit login form', async () => {
+      await expect(this.page.getByRole('textbox', { name: 'Email Address' })).toBeVisible({timeout: 10000});
       await this.page.getByRole('textbox', { name: 'Email Address' }).fill(data.email);
       await this.page.getByRole('textbox', { name: '••••••••' }).fill(data.password);
       await this.page.getByRole('button', { name: 'Sign In to Dashboard' }).click();
