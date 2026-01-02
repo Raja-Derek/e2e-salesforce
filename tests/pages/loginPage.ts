@@ -30,7 +30,9 @@ export class LoginPage {
 
     await test.step('User submit login form', async () => {
       await expect(this.page.getByRole('textbox', { name: 'Email Address' })).toBeVisible({timeout: 10000});
+      await this.page.getByRole('textbox', { name: 'Email Address' }).click();
       await this.page.getByRole('textbox', { name: 'Email Address' }).fill(data.email);
+      await this.page.getByRole('textbox', { name: '••••••••' }).click();
       await this.page.getByRole('textbox', { name: '••••••••' }).fill(data.password);
       await this.page.getByRole('button', { name: 'Sign In to Dashboard' }).click();
 
