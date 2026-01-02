@@ -1,0 +1,119 @@
+name: 🌌 SALESFORCE PLAYWRIGHT OPS
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  repository_dispatch:
+    types: [automation-salesforce-updated]
+
+permissions:
+  contents: write
+
+jobs:
+  cyber_amp_ops:
+    runs-on: ubuntu-latest
+    environment: Stage
+
+    steps:
+      - name: 🔮 Neon Boot Sequence
+        run: |
+          echo -e "\033[36m"
+          echo " ██████╗ █████╗ ███╗   ███╗██████╗ "
+          echo "██╔════╝██╔══██╗████╗ ████║██╔══██╗"
+          echo "██║     ███████║██╔████╔██║██████╔╝"
+          echo "██║     ██╔══██║██║╚██╔╝██║██╔═══╝ "
+          echo "╚██████╗██║  ██║██║ ╚═╝ ██║██║     "
+          echo " ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝     "
+          echo -e "\033[0m"
+          echo -e "\033[32m[+] Neural grid connected\033[0m"
+          sleep 1
+
+      - name: 🧾 Syncing Code Matrix
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Inject Node Core
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: 🧠 Restore Dependency Cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: 🛰️ Restore Browser Arsenal
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: 📦 Download Cyber Modules
+        run: |
+          echo -e "\033[36m[*] Pulling external modules...\033[0m"
+          npm ci
+          echo -e "\033[32m[✓] Modules synchronized\033[0m"
+
+      - name: 🌐 Deploy Browser Engines
+        run: |
+          echo -e "\033[33m[*] Activating headless browser cores...\033[0m"
+          npx playwright install --with-deps
+          echo -e "\033[32m[✓] Browser engines armed\033[0m"
+
+      - name: ⚡ Execute AMP Test Protocol
+        env:
+          BASE_URL: ${{ vars.BASE_URL }}
+          LOGIN_EMAIL: ${{ vars.LOGIN_EMAIL }}
+          LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
+        run: |
+          echo -e "\033[35m[⚡] Launching automated strike sequence...\033[0m"
+          npx playwright test
+          echo -e "\033[32m[✓] Test protocol completed\033[0m"
+
+      - name: Copy categories
+        run: cp categories.json allure-results/
+        
+      - name: 🧬 Compile Allure Intelligence
+        if: always()
+        run: |
+          echo -e "\033[36m[*] Compiling visual intelligence report...\033[0m"
+          npm install -g allure-commandline
+          allure generate allure-results --clean -o allure-report
+          echo -e "\033[32m[✓] Allure report generated\033[0m"
+
+      - name: 🌍 Publish to Neon Grid
+        uses: peaceiris/actions-gh-pages@v4
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report
+
+      - name: 📡 Secure Digital Evidence
+        if: always()
+        run: |
+          set -eux
+          echo -e "\033[36m[*] Securing operation artifacts...\033[0m"
+          rm -f playwright-artifacts.zip || true
+          if [ -d playwright-report ]; then
+            zip -r playwright-artifacts.zip playwright-report || true
+          fi
+          if [ -d test-results ]; then
+            zip -r playwright-artifacts.zip test-results || true
+          fi
+          echo -e "\033[32m[✓] Evidence vault sealed\033[0m"
+
+      - name: 🗄️ Upload Artifact Vault
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cyberpunk-amp-artifacts
+          path: playwright-artifacts.zip
+
+      - name: 📊 Upload Visual Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cyberpunk-amp-playwright-report
+          path: playwright-report/
