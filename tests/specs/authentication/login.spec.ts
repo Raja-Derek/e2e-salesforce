@@ -1,30 +1,41 @@
 import { test } from '@playwright/test';
 import { LoginPage } from '../../pages/loginPage';
 import { TEST_DATA } from '../../data/testData';
-import { qase } from 'playwright-qase-reporter';
 
 test.describe('Login Tests', () => {
-  test('[Supervisor] login to platform', async ({ page }) => {
-    qase.id(733);
+  test('Login dengan email salah', async ({ page }) => {
     const loginPage = new LoginPage(page);
 
-    await loginPage.login(TEST_DATA.supervisorEmail, TEST_DATA.supervisorPassword);
+    await loginPage.login({ email: 'tahubulat@gmail.com', password: TEST_DATA.passwordLogin });
+    await loginPage.assertDashboardNotVisible();
+  });
+  
+  test('Login dengan Kredensial Valid', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.login({ email: TEST_DATA.emailLogin, password: TEST_DATA.passwordLogin });
     await loginPage.assertDashboardVisible();
   });
 
-  test('[Director] login to platform', async ({ page }) => {
-    qase.id(737);
+  test('Login dengan Password Salah', async ({ page }) => {
     const loginPage = new LoginPage(page);
 
-    await loginPage.login(TEST_DATA.dirutEmail, TEST_DATA.dirutPassword);
-    await loginPage.assertDashboardVisible();
+    await loginPage.login({ email: TEST_DATA.emailLogin, password: 'invalidpassword' });
+    await loginPage.assertDashboardNotVisible();
   });
 
-  test('[HR] login to platform', async ({ page }) => {
-    qase.id(745);
+  test('Login Tanpa Mengisi Email dan Password', async ({ page }) => {
     const loginPage = new LoginPage(page);
-    
-    await loginPage.login(TEST_DATA.hrEmail, TEST_DATA.hrPassword);
-    await loginPage.assertDashboardVisible();
+
+    await loginPage.submitLoginFormWithoutFillingCredentials();
+
+  });
+
+  test('Navigasi ke halaman lupa kata sandi', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.navigateToLoginPage();
+    await loginPage.navigateToForgotPasswordPage();
+    await loginPage.assertForgotPasswordPageVisible();
   });
 });

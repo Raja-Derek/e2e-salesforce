@@ -1,6 +1,6 @@
 import { Page, expect, test } from '@playwright/test';
-import { SELECTORS } from '../data/selectors';
 import { TEST_DATA } from '../data/testData';
+import { LoginData } from '../types/login';
 
 export class LoginPage {
   readonly page: Page;
@@ -9,30 +9,12 @@ export class LoginPage {
     this.page = page;
   }
 
-  async navigate() {
-    await this.page.goto(TEST_DATA.baseUrl);
-  }
+  private readonly loginURL = TEST_DATA.baseUrl + '/sign-in';
 
-  async enterEmail(email: string) {
-    await this.page.fill(SELECTORS.emailInput, email);
+  async navigateToLoginPage() {
+    await this.page.goto(this.loginURL);
   }
-
-  async enterPassword(password: string) {
-    await this.page.fill(SELECTORS.passwordInput, password);
-  }
-
-  async clickLogin() {
-    await this.page.click(SELECTORS.loginButton);
-  }
-
-  async assertDashboardVisible() {
-    await test.step('Dashboard page is visible', async () => {
-      await this.page.waitForResponse(res =>
-        res.url().includes('/core') && res.status() === 200
-      )
-    });
-  }
-
+  
   async logout(karyawanName: string) {
     await this.page.getByRole('button', { name: karyawanName }).click();
     await this.page.getByRole('button', { name: 'Keluar' }).click();
@@ -40,19 +22,58 @@ export class LoginPage {
     await expect(this.page.getByTestId('sign-in_password-input')).toBeVisible();
   }
 
-  async login(email: string, password: string) {
+  async login(data: LoginData) {
     await test.step('User navigate to login page', async () => {
-      await this.navigate();
+      await this.page.goto(this.loginURL);
     })
 
     await test.step('User submit login form', async () => {
-      await this.enterEmail(email);
-      await this.enterPassword(password);
-      await this.clickLogin();
-      await expect(this.page.getByText('Lagi cek keaslian email...', { exact: true })).not.toBeVisible({timeout: 60000});
+      await this.page.getByRole('textbox', { name: 'Email Address' }).fill(data.email);
+      await this.page.getByRole('textbox', { name: '••••••••' }).fill(data.password);
+      await this.page.getByRole('button', { name: 'Sign In to Dashboard' }).click();
 
-    }
-    );
+    });
   }
 
+  async navigateToForgotPasswordPage() {
+    await test.step('User navigate to login page', async () => {
+      await this.page.getByRole('link', { name: 'Forgot your password?' }).click();
+
+    })
+  }
+
+  async assertForgotPasswordPageVisible(){
+    await test.step('Forgot Password page is visible', async () => {
+      await expect(this.page.getByRole('heading', { name: 'Forgot Your Password?' })).toBeVisible();
+    })
+  }
+
+  async submitLoginFormWithoutFillingCredentials() {
+    await test.step('User navigate to login page', async () => {
+      await this.page.goto(this.loginURL);
+    })
+
+    await test.step('User submit login form without filling credentials', async () => {
+      await expect(this.page.getByRole('button', { name: 'Sign In to Dashboard' })).toBeDisabled();
+    });
+  }
+
+
+  async assertDashboardVisible() {
+    await test.step('Dashboard page is visible', async () => {
+      await this.page.waitForResponse(res =>
+        res.url().includes('/dashboard') && res.status() === 200
+      )
+    });
+  }
+
+  async assertDashboardNotVisible() {
+    await test.step('Dashboard page is not visible', async () => {
+      await expect(this.page.getByRole('heading', { name: 'Dashboard this.Page' })).not.toBeVisible();
+      await expect(this.page.getByRole('link', { name: 'dashboard' })).not.toBeVisible();
+
+      await expect(this.page.getByText('Email atau kata sandi salah')).toBeVisible();
+
+    });
+  }
 }

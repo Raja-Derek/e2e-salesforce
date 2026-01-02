@@ -1,8 +1,10 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import { chromium } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 import { TEST_DATA } from '../data/testData';
-import { SELECTORS } from '../data/selectors';
+
 
 async function createStorageState(roleName: string, email: string, password: string) {
   // Launch browser with TLS error tolerance and in a context to allow https endpoints in CI/local envs
@@ -16,11 +18,13 @@ async function createStorageState(roleName: string, email: string, password: str
   page.on('requestfailed', req => console.log(`[requestfailed][${roleName}] ${req.url()} ${req.failure()?.errorText || ''}`));
 
   // Validate base URL before navigation. TEST_DATA.baseUrl should be defined via env (.env or CI secrets).
-  const baseUrl = TEST_DATA.baseUrl;
+  const baseUrl = TEST_DATA.baseUrl + '/sign-in';
   let finalBaseUrl: string;
   if (baseUrl) {
+    console.log(`✅ BASE_URL found in TEST_DATA: ${baseUrl}`);
     finalBaseUrl = baseUrl.startsWith('http') ? baseUrl : `http://${baseUrl}`;
   } else {
+    console.log('⚠️ BASE_URL is not defined in TEST_DATA.');
     const fallbackUrl = process.env.BASE_URL || 'http://localhost:3000';
     console.warn(`BASE_URL is not defined. Using fallback: ${fallbackUrl}. Set BASE_URL environment variable to run against the desired environment.`);
     finalBaseUrl = fallbackUrl;
@@ -35,12 +39,10 @@ async function createStorageState(roleName: string, email: string, password: str
 
   // Perform login
   console.log(`🔐 Logging in as ${roleName} (${email})`);
-  await page.fill(SELECTORS.emailInput, email);
-  await page.fill(SELECTORS.passwordInput, password);
-  await page.click(SELECTORS.loginButton);
-  await page.getByText('Berhasil login').click({timeout:20000});
-
-  await page.waitForURL(/.*core/);
+  await page.getByRole('textbox', { name: 'Email Address' }).fill(email);
+  await page.getByRole('textbox', { name: '••••••••' }).fill(password);
+  await page.getByRole('button', { name: 'Sign In to Dashboard' }).click();
+  await page.waitForURL(/.*dashboard/);
 
   // Save storage state
   const outputPath = path.join(__dirname, `${roleName}.json`);
@@ -60,10 +62,8 @@ async function globalSetup() {
 
   console.log('🔐 Generating auth sessions...');
 
-  await createStorageState('supervisor', TEST_DATA.supervisorEmail, TEST_DATA.supervisorPassword);
-  await createStorageState('director', TEST_DATA.dirutEmail, TEST_DATA.dirutPassword);
-  await createStorageState('hr', TEST_DATA.hrEmail, TEST_DATA.hrPassword);
-  await createStorageState('admin', TEST_DATA.adminEmail, TEST_DATA.adminPassword);
+  await createStorageState('admin', TEST_DATA.emailLogin, TEST_DATA.passwordLogin);
+
 
   console.log('🏁 All sessions generated!');
 }
