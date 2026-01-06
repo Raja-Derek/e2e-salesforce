@@ -1,6 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","17713","Login dengan Password Salah","chromium","2026-01-02","passed","2026-01-02","Login Tests","","",""
-"","10301","Navigasi ke halaman lupa kata sandi","chromium","2026-01-02","failed","2026-01-02","Login Tests","","",""
-"","14991","Login dengan email salah","chromium","2026-01-02","passed","2026-01-02","Login Tests","","",""
-"","17369","Login dengan Kredensial Valid","chromium","2026-01-02","passed","2026-01-02","Login Tests","","",""
-"","15665","Login Tanpa Mengisi Email dan Password","chromium","2026-01-02","passed","2026-01-02","Login Tests","","",""
