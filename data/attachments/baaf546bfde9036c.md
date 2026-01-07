@@ -1,0 +1,27 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - alert [ref=e2]
+  - generic [ref=e9]:
+    - generic [ref=e10]:
+      - img [ref=e12]
+      - heading "SALESFORCE INTERNAL" [level=1] [ref=e15]
+    - generic [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - generic [ref=e22]: Email Address
+          - textbox "Email Address" [ref=e23]:
+            - /placeholder: name@company.com
+        - generic [ref=e24]:
+          - generic [ref=e25]: Password
+          - generic [ref=e26]:
+            - textbox "••••••••" [ref=e27]
+            - button [ref=e28]:
+              - img
+      - button "Sign In to Dashboard" [disabled]:
+        - generic: Sign In to Dashboard
+      - link "Forgot your password?" [active] [ref=e30] [cursor=pointer]:
+        - /url: "#"
+    - paragraph [ref=e31]: PT Lintas Cakra Cipta
+```
