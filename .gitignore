@@ -12,3 +12,4 @@ node_modules/
 /test-results
 /allure-results
 /allure-report
+.github/workflows/salesforce-flow_full.yml

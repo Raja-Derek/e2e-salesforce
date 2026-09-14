@@ -1,12 +1,7 @@
 name: 🌌 SALESFORCE PLAYWRIGHT OPS
 
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
-  repository_dispatch:
-    types: [automation-salesforce-updated]
+  workflow_dispatch:
 
 permissions:
   contents: write
