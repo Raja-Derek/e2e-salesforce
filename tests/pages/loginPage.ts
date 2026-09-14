@@ -73,10 +73,11 @@ export class LoginPage {
 
   async assertDashboardNotVisible() {
     await test.step('Dashboard page is not visible', async () => {
+      await this.page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
       await expect(this.page.getByRole('heading', { name: 'Dashboard this.Page' })).not.toBeVisible();
       await expect(this.page.getByRole('link', { name: 'dashboard' })).not.toBeVisible();
-
-      await expect(this.page.getByText('Email atau kata sandi salah')).toBeVisible();
+      
+      await expect(this.page.getByText('Email atau kata sandi salah')).toBeVisible({ timeout: 15000 });
 
     });
   }

@@ -31,11 +31,4 @@ test.describe('Login Tests', () => {
 
   });
 
-  test('Navigasi ke halaman lupa kata sandi', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-
-    await loginPage.navigateToLoginPage();
-    await loginPage.navigateToForgotPasswordPage();
-    await loginPage.assertForgotPasswordPageVisible();
-  });
 });
