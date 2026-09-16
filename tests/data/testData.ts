@@ -22,3 +22,7 @@ export const DATA_PERAN = {
   hr: 'auto hr',
   staff: 'auto staff'
 }
+
+export const DATA_PRODUK = {
+  autoProduct: 'auto_produk'
+}

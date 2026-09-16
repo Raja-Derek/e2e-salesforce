@@ -39,18 +39,6 @@ export class LoginPage {
     });
   }
 
-  async navigateToForgotPasswordPage() {
-    await test.step('User navigate to login page', async () => {
-      await this.page.getByRole('link', { name: 'Forgot your password?' }).click();
-
-    })
-  }
-
-  async assertForgotPasswordPageVisible(){
-    await test.step('Forgot Password page is visible', async () => {
-      await expect(this.page.getByRole('heading', { name: 'Forgot Your Password?' })).toBeVisible();
-    })
-  }
 
   async submitLoginFormWithoutFillingCredentials() {
     await test.step('User navigate to login page', async () => {
