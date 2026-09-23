@@ -57,7 +57,7 @@ jobs:
           npx playwright install --with-deps
           echo -e "\033[32m[✓] Browser engines armed\033[0m"
 
-      - name: ⚡ Execute AMP Test Protocol
+      - name: ⚡ Execute Salesforce Test Protocol
         env:
           BASE_URL: ${{ vars.BASE_URL }}
           LOGIN_EMAIL: ${{ vars.LOGIN_EMAIL }}
