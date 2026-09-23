@@ -1,34 +1,23 @@
-import { test } from '@playwright/test';
-import { LoginPage } from '../../pages/loginPage';
-import { TEST_DATA } from '../../data/testData';
+import { test } from '../../fixtures/app.fixtures';
+import { CREDENTIALS } from '../../data/testData';
 
-test.describe('Login Tests', () => {
-  test('Login dengan email salah', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-
-    await loginPage.login({ email: 'tahubulat@gmail.com', password: TEST_DATA.passwordLogin });
-    await loginPage.assertDashboardNotVisible();
-  });
-  
-  test('Login dengan Kredensial Valid', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-
-    await loginPage.login({ email: TEST_DATA.emailLogin, password: TEST_DATA.passwordLogin });
-    await loginPage.assertDashboardVisible();
+test.describe('Login', { tag: '@auth' }, () => {
+  test('menolak login dengan email tidak terdaftar', async ({ loginPage }) => {
+    await loginPage.login(CREDENTIALS.unknownEmail());
+    await loginPage.expectLoginFailed();
   });
 
-  test('Login dengan Password Salah', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-
-    await loginPage.login({ email: TEST_DATA.emailLogin, password: 'invalidpassword' });
-    await loginPage.assertDashboardNotVisible();
+  test('berhasil login dengan kredensial valid', async ({ loginPage }) => {
+    await loginPage.login(CREDENTIALS.valid());
+    await loginPage.expectLoginSuccess();
   });
 
-  test('Login Tanpa Mengisi Email dan Password', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-
-    await loginPage.submitLoginFormWithoutFillingCredentials();
-
+  test('menolak login dengan password salah', async ({ loginPage }) => {
+    await loginPage.login(CREDENTIALS.wrongPassword());
+    await loginPage.expectLoginFailed();
   });
 
+  test('menonaktifkan tombol Sign In saat form kosong', async ({ loginPage }) => {
+    await loginPage.expectSignInDisabledWhenEmpty();
+  });
 });

@@ -1,84 +1,72 @@
-import { Page, expect, test } from '@playwright/test';
-import { TEST_DATA } from '../data/testData';
-import { LoginData } from '../types/login';
+import { expect, test, type Locator, type Page } from '@playwright/test';
+import { ENV, ROUTES, TIMEOUTS } from '../utils/env';
+import { UI_TEXT } from '../data/testData';
+import type { LoginData } from '../types/login';
+import { BasePage } from './base.page';
 
-export class LoginPage {
-  readonly page: Page;
+/**
+ * Page Object untuk halaman Sign In.
+ *
+ * Aturan:
+ * - Semua selector hidup sebagai field Locator (mudah diupdate).
+ * - Setiap aksi publik dibungkus test.step agar laporan Allure terbaca.
+ * - Spec tidak boleh memakai page.getBy* langsung untuk halaman ini.
+ */
+export class LoginPage extends BasePage {
+  private readonly loginUrl = `${ENV.baseUrl}${ROUTES.signIn}`;
+
+  readonly emailInput: Locator;
+  readonly passwordInput: Locator;
+  readonly signInButton: Locator;
+  readonly loginErrorMessage: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
+    this.emailInput = page.getByRole('textbox', { name: 'Email Address' });
+    this.passwordInput = page.getByRole('textbox', { name: '••••••••' });
+    this.signInButton = page.getByRole('button', { name: 'Sign In to Dashboard' });
+    this.loginErrorMessage = page.getByText(UI_TEXT.loginFailed);
   }
 
-  private readonly loginURL = TEST_DATA.baseUrl + '/sign-in';
-
-  async navigateToLoginPage() {
-    await this.page.goto(this.loginURL);
-  }
-
-  async logout(karyawanName: string) {
-    await this.page.getByRole('button', { name: karyawanName }).click();
-    await this.page.getByRole('button', { name: 'Keluar' }).click();
-    await expect(this.page.getByTestId('sign-in_email-input')).toBeVisible();
-    await expect(this.page.getByTestId('sign-in_password-input')).toBeVisible();
-  }
-
-  async login(data: LoginData) {
-    await test.step('User navigate to login page', async () => {
-      await this.page.goto(this.loginURL);
-      await expect(this.page).toHaveURL(this.loginURL);
-    })
-
-    await test.step('User submit login form', async () => {
-      await expect(this.page.getByRole('textbox', { name: 'Email Address' })).toBeVisible({timeout: 10000});
-      await this.page.getByRole('textbox', { name: 'Email Address' }).click();
-      await this.page.getByRole('textbox', { name: 'Email Address' }).fill(data.email);
-      await this.page.getByRole('textbox', { name: '••••••••' }).click();
-      await this.page.getByRole('textbox', { name: '••••••••' }).fill(data.password);
-      await this.page.getByRole('button', { name: 'Sign In to Dashboard' }).click();
-
+  async goto(): Promise<void> {
+    await test.step('Buka halaman login', async () => {
+      await this.gotoPath(this.loginUrl);
+      await expect(this.page).toHaveURL(this.loginUrl);
     });
   }
 
-  async navigateToForgotPasswordPage() {
-    await test.step('User navigate to login page', async () => {
-      await this.page.getByRole('link', { name: 'Forgot your password?' }).click();
+  async login(data: LoginData): Promise<void> {
+    await test.step('Buka halaman login', async () => {
+      await this.page.goto(this.loginUrl);
+      await expect(this.page).toHaveURL(this.loginUrl);
+    });
 
-    })
-  }
-
-  async assertForgotPasswordPageVisible(){
-    await test.step('Forgot Password page is visible', async () => {
-      await expect(this.page.getByRole('heading', { name: 'Forgot Your Password?' })).toBeVisible();
-    })
-  }
-
-  async submitLoginFormWithoutFillingCredentials() {
-    await test.step('User navigate to login page', async () => {
-      await this.page.goto(this.loginURL);
-    })
-
-    await test.step('User submit login form without filling credentials', async () => {
-      await expect(this.page.getByRole('button', { name: 'Sign In to Dashboard' })).toBeDisabled();
+    await test.step(`Login sebagai ${data.email}`, async () => {
+      await expect(this.emailInput).toBeVisible({ timeout: TIMEOUTS.dialog });
+      await this.emailInput.fill(data.email);
+      await this.passwordInput.fill(data.password);
+      await this.signInButton.click();
     });
   }
 
-
-  async assertDashboardVisible() {
-    await test.step('Dashboard page is visible', async () => {
-      await this.page.waitForResponse(res =>
-        res.url().includes('/dashboard') && res.status() === 200
-      )
+  async expectLoginSuccess(): Promise<void> {
+    await test.step('Dashboard tampil setelah login', async () => {
+      await expect(this.page).toHaveURL(ROUTES.dashboard, { timeout: TIMEOUTS.list });
     });
   }
 
-  async assertDashboardNotVisible() {
-    await test.step('Dashboard page is not visible', async () => {
-      await this.page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-      await expect(this.page.getByRole('heading', { name: 'Dashboard this.Page' })).not.toBeVisible();
-      await expect(this.page.getByRole('link', { name: 'dashboard' })).not.toBeVisible();
-      
-      await expect(this.page.getByText('Email atau kata sandi salah')).toBeVisible({ timeout: 15000 });
+  async expectLoginFailed(): Promise<void> {
+    await test.step('Pesan error login tampil, dashboard tidak terbuka', async () => {
+      await this.page.waitForLoadState('networkidle', { timeout: TIMEOUTS.networkIdle }).catch(() => {});
+      await expect(this.page).not.toHaveURL(ROUTES.dashboard);
+      await expect(this.loginErrorMessage).toBeVisible({ timeout: TIMEOUTS.list });
+    });
+  }
 
+  async expectSignInDisabledWhenEmpty(): Promise<void> {
+    await test.step('Tombol Sign In disabled saat form kosong', async () => {
+      await this.gotoPath(this.loginUrl);
+      await expect(this.signInButton).toBeDisabled({ timeout: TIMEOUTS.dialog });
     });
   }
 }
