@@ -1,40 +1,41 @@
-import { expect, test } from '@playwright/test';
-import { TEST_DATA } from '../../data/testData';
+import { expect, test } from '../../fixtures/app.fixtures';
+import { DATA_PRODUK } from '../../data/testData';
+import { STORAGE_STATE } from '../../utils/env';
 
-// Langsung pakai cookie login yang sudah disimpan global-setup (tests/auth/admin.json)
-// Jadi tidak perlu login manual di tiap test
-test.use({ storageState: 'tests/auth/admin.json' });
+// Auth sekali via global-setup, tidak perlu login manual per test.
+test.use({ storageState: STORAGE_STATE.admin });
 
-test.describe('Product Tests', () => {
-    test('Membuka detail produk', async ({ page }) => {
-        // Sudah authenticated via storageState, langsung ke dashboard
-        await page.goto(TEST_DATA.baseUrl + '/products');
+test.describe('Katalog Produk', { tag: '@products' }, () => {
+  test.beforeEach(async ({ productPage }) => {
+    await productPage.goto();
+  });
 
-        await expect(page.getByRole('heading', { name: 'Katalog Produk' })).toBeVisible();
+  test('membuka detail produk', async ({ productPage }) => {
+    await productPage.openDetail(DATA_PRODUK.autoCrane);
+    await productPage.expectDetailVisible(DATA_PRODUK.autoCrane);
+  });
 
-        // Tunggu produk selesai loading (di screenshot gagal terlihat masih skeleton).
-        // Produk muncul sebagai card/teks, BUKAN dialog. Dialog baru ada setelah produk di-klik.
-        const product = page.getByText('Plat Baja');
-        await expect(product).toBeVisible({ timeout: 15000 });
+  test('mencari produk berdasarkan nama', async ({ productPage }) => {
+    await productPage.search(DATA_PRODUK.autoCrane);
+    await expect(productPage.productText(DATA_PRODUK.autoCrane)).toBeVisible();
+  });
 
-        await product.click();
-        await expect(
-            page.getByRole('dialog').filter({ hasText: 'Plat Baja' })
-        ).toBeVisible({ timeout: 10000 });
-    });
+  test('mengedit produk lalu menyimpan perubahan', async ({ productPage }) => {
+    await productPage.search(DATA_PRODUK.autoCrane);
+    await productPage.openEditFor(DATA_PRODUK.autoCrane);
+    await productPage.saveEditAndConfirm();
+    await productPage.expectUpdateSuccess();
+  });
 
-    test('Search produk', async ({ page }) => {
-        await page.goto(TEST_DATA.baseUrl + '/products');
+  test('menonaktifkan produk', async ({ productPage }) => {
+    await productPage.search(DATA_PRODUK.platBaja);
+    // Precondition: status nonaktif persist antar run, pulihkan dulu bila perlu.
+    await productPage.ensureProductActive(DATA_PRODUK.platBaja);
+    await productPage.deactivate(DATA_PRODUK.platBaja);
 
-        await expect(page.getByRole('heading', { name: 'Katalog Produk' })).toBeVisible();
-
-        const search = page.getByRole('textbox', { name: 'Cari nama atau SKU...' });
-        await expect(search).toBeVisible();
-        await search.click();
-        await search.fill('Plat baja');
-
-        // Produk muncul sebagai card/teks, BUKAN heading.
-        // Pakai getByText + timeout panjang karena list masih skeleton saat search (lihat test-failed-1.png).
-        await expect(page.getByText(/Plat Baja/i).first()).toBeVisible({ timeout: 15000 });
-    })
+    // Verifikasi status nonaktif lewat dialog detail.
+    await productPage.openDetail(DATA_PRODUK.platBaja);
+    await productPage.expectDetailVisible(DATA_PRODUK.platBaja);
+    await expect(productPage.inactiveBadge).toBeVisible();
+  });
 });
