@@ -105,6 +105,7 @@ export class ProductPage extends BasePage {
       await expect(card).toBeVisible({ timeout: TIMEOUTS.list });
       await card.getByRole('button', { name: 'Edit' }).click();
       await expect(this.editDialog).toBeVisible({ timeout: TIMEOUTS.dialog });
+      await this.page.waitForTimeout(3000); // Tunggu animasi dialog selesai (agar tombol bisa diklik)
     });
   }
 

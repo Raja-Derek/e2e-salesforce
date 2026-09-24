@@ -51,6 +51,7 @@ export class LoginPage extends BasePage {
 
   async expectLoginSuccess(): Promise<void> {
     await test.step('Dashboard tampil setelah login', async () => {
+      await this.page.waitForLoadState('networkidle', { timeout: TIMEOUTS.networkIdle }).catch(() => {});
       await expect(this.page).toHaveURL(ROUTES.dashboard, { timeout: TIMEOUTS.list });
     });
   }

@@ -21,9 +21,9 @@ test.describe.configure({ retries: 1 });
  * suffix kembar kalau hanya mengandalkan timestamp.
  */
 function uniqueToken(): string {
-  const time = Date.now().toString(36);
-  const random = Math.random().toString(36).slice(2, 8);
-  return `${time}${random}`;
+  const time = Date.now().toString(5);
+  const random = Math.random().toString(5).slice(2, 5);
+  return `${random}`;
 }
 
 /** Nomor HP numerik 11 digit (format 08xxxxxxxxx) dengan 9 digit acak. */
@@ -53,7 +53,7 @@ function newPersonalCustomer(): PersonalCustomerData {
   };
 }
 
-test.describe('Customer Perusahaan', { tag: '@perusahaan' }, () => {
+test.describe.serial('Customer Perusahaan', { tag: '@perusahaan' }, () => {
   test.beforeEach(async ({ customerPage }) => {
     await customerPage.goto();
   });
@@ -115,7 +115,7 @@ test.describe('Customer Perusahaan', { tag: '@perusahaan' }, () => {
   });
 });
 
-test.describe('Customer Perorangan', { tag: '@personal' }, () => {
+test.describe.serial('Customer Perorangan', { tag: '@personal' }, () => {
   test.beforeEach(async ({ customerPage }) => {
     await customerPage.goto();
   });
