@@ -7,7 +7,7 @@ permissions:
   contents: write
 
 jobs:
-  cyber_amp_ops:
+  cyber_salesforce_ops:
     runs-on: ubuntu-latest
     environment: Stage
 
@@ -110,12 +110,12 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cyberpunk-amp-artifacts
+          name: cyberpunk-salesforce-artifacts
           path: playwright-artifacts.zip
 
       - name: 📊 Upload Visual Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cyberpunk-amp-playwright-report
+          name: cyberpunk-salesforce-playwright-report
           path: playwright-report/
