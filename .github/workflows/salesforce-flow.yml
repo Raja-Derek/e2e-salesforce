@@ -68,7 +68,14 @@ jobs:
           echo -e "\033[32m[✓] Test protocol completed\033[0m"
 
       - name: Copy categories
-        run: cp categories.json allure-results/
+        if: always()
+        run: |
+          mkdir -p allure-results
+          if [ -f categories.json ]; then
+            cp categories.json allure-results/
+          else
+            echo "categories.json not found, skipping copy"
+          fi
         
       - name: 🧬 Compile Allure Intelligence
         if: always()
