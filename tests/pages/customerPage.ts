@@ -43,6 +43,7 @@ export class CustomerPage extends BasePage {
   readonly emptyStateText: Locator;
   readonly contactDetailHeading: Locator;
   readonly closeButton: Locator;
+  readonly createSuccessAddedToast: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -70,6 +71,7 @@ export class CustomerPage extends BasePage {
     this.editOption = page.locator('[data-test^="edit-"]');
     this.deleteOption = page.locator('[data-test^="delete-"]');
     this.createSuccessToast = page.getByText(UI_TEXT.customerCreated);
+    this.createSuccessAddedToast = page.getByText(UI_TEXT.customerSuccessfullyAdded);
     this.createErrorToast = page.getByText(UI_TEXT.createCustomerFailed);
     this.updateSuccessToast = page.getByText(UI_TEXT.customerUpdated);
     this.deleteSuccessToast = page.getByText(UI_TEXT.customerDeleted);
@@ -138,12 +140,14 @@ export class CustomerPage extends BasePage {
     await test.step('Buka dialog Tambah Customer', async () => {
       await this.addButton.click();
       await expect(this.createDialog).toBeVisible({ timeout: TIMEOUTS.dialog });
+      await this.page.waitForTimeout(3000); // Tunggu animasi dialog selesai (agar tombol bisa diklik)
     });
   }
 
   async selectPersonalType(): Promise<void> {
     await test.step('Pilih tipe customer Personal', async () => {
       await this.personalTabButton.click();
+      await this.page.waitForTimeout(3000); // Tunggu animasi tab selesai (agar tombol bisa diklik)
       await expect(this.nameInput).toBeVisible({ timeout: TIMEOUTS.dialog });
     });
   }
@@ -176,6 +180,7 @@ export class CustomerPage extends BasePage {
       await expect(this.createConfirmDialog).toBeVisible({ timeout: TIMEOUTS.dialog });
       await this.confirmButton.click();
       await this.expectToastAppearAndDismiss(this.createSuccessToast, UI_TEXT.customerCreated);
+      await this.expectToastAppearAndDismiss(this.createSuccessAddedToast, UI_TEXT.customerSuccessfullyAdded);
 
       // Kalau backend gagal (mis. 500 "Terjadi kesalahan yang tidak diketahui"),
       // aplikasi menampilkan toast error dan dialog tetap terbuka. Gagal cepat

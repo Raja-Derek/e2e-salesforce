@@ -7,7 +7,7 @@ permissions:
   contents: write
 
 jobs:
-  cyber_amp_ops:
+  cyber_salesforce_ops:
     runs-on: ubuntu-latest
     environment: Stage
 
@@ -57,7 +57,7 @@ jobs:
           npx playwright install --with-deps
           echo -e "\033[32m[✓] Browser engines armed\033[0m"
 
-      - name: ⚡ Execute AMP Test Protocol
+      - name: ⚡ Execute Salesforce Test Protocol
         env:
           BASE_URL: ${{ vars.BASE_URL }}
           LOGIN_EMAIL: ${{ vars.LOGIN_EMAIL }}
@@ -68,7 +68,14 @@ jobs:
           echo -e "\033[32m[✓] Test protocol completed\033[0m"
 
       - name: Copy categories
-        run: cp categories.json allure-results/
+        if: always()
+        run: |
+          mkdir -p allure-results
+          if [ -f categories.json ]; then
+            cp categories.json allure-results/
+          else
+            echo "categories.json not found, skipping copy"
+          fi
         
       - name: 🧬 Compile Allure Intelligence
         if: always()
@@ -103,12 +110,12 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cyberpunk-amp-artifacts
+          name: cyberpunk-salesforce-artifacts
           path: playwright-artifacts.zip
 
       - name: 📊 Upload Visual Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cyberpunk-amp-playwright-report
+          name: cyberpunk-salesforce-playwright-report
           path: playwright-report/

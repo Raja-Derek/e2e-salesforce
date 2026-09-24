@@ -99,6 +99,7 @@ export const UI_TEXT = {
   // Dipakai untuk gagal cepat dengan pesan jelas, bukan timeout 30 detik yang buram.
   createCustomerFailed: 'Terjadi kesalahan',
   customerUpdated: 'Customer berhasil diperbarui',
+  customerSuccessfullyAdded: 'Customer berhasil ditambahkan',
   customerDeleted: 'Customer berhasil dihapus',
   emptyStateHeading: 'Tidak ada data ditemukan',
   emptyStateText: 'Belum ada customer yang',
