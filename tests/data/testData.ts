@@ -79,6 +79,23 @@ export const DATA_CUSTOMER_PERSONAL_EDIT = {
   address: 'Jalan automation edit',
 } as const;
 
+export const DATA_KUNJUNGAN = {
+  customerName: 'Crane Auto',
+  location: 'PT Abc',
+  purpose: 'test',
+  notes: 'test catatan',
+} as const;
+
+export const DATA_KUNJUNGAN_EDIT = {
+  location: 'PT Abc Edit',
+  purpose: 'Edit tujuan',
+  notes: 'Edit catatan',
+} as const;
+
+export const DATA_KUNJUNGAN_SELESAI = {
+  result: 'test',
+} as const;
+
 /** Teks UI yang dipakai untuk assertion. Diupdate di satu tempat jika copy berubah. */
 export const UI_TEXT = {
   loginFailed: 'Email atau kata sandi salah',
@@ -105,4 +122,18 @@ export const UI_TEXT = {
   emptyStateText: 'Belum ada customer yang',
   contactDetailHeading: 'Detail Kontak',
   maleGenderLabel: 'Laki-laki',
+  scheduleVisitDialog: 'Jadwalkan Kunjungan',
+  saveVisitConfirm: 'SIMPAN KUNJUNGAN?',
+  visitSaving: 'Menyimpan kunjungan massal...',
+  editVisitDialog: 'Edit Kunjungan',
+  updateVisitConfirm: 'Update Kunjungan?',
+  visitUpdating: 'Mengubah kunjungan...',
+  completeVisitDialog: 'Selesaikan Kunjungan',
+  saveVisitResultConfirm: 'Simpan Hasil Kunjungan?',
+  visitCompleted: 'Berhasil menyelesaikan',
+  visitStatusDone: 'Selesai',
+  deleteVisitConfirm: 'Hapus Kunjungan?',
+  visitDeleted: 'Berhasil menghapus kunjungan',
+  visitUpdated: 'Berhasil mengubah kunjungan',
+  visitStatusPending: 'Pending',
 } as const;
