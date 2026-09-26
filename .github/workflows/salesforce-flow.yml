@@ -1,7 +1,17 @@
 name: 🌌 SALESFORCE PLAYWRIGHT OPS
 
 on:
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [master]
   workflow_dispatch:
+
+# Batalkan run lama yang sudah kedaluwarsa saat ada commit baru di PR yang sama.
+concurrency:
+  group: salesforce-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -87,7 +97,10 @@ jobs:
 
       - name: 🌍 Publish to Neon Grid
         uses: peaceiris/actions-gh-pages@v4
-        if: always()
+        # Jangan publish dari run PR: hanya dari push ke master / manual.
+        # Kalau tetap jalan di PR (fork), step ini bisa gagal karena permission
+        # dan bikin check merah padahal test-nya lolos.
+        if: always() && github.event_name != 'pull_request'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: allure-report
@@ -112,6 +125,9 @@ jobs:
         with:
           name: cyberpunk-salesforce-artifacts
           path: playwright-artifacts.zip
+          # Jangan bikin check merah hanya karena file artefak tidak ada;
+          # yang boleh menggagalkan merge hanya kegagalan test (build).
+          if-no-files-found: warn
 
       - name: 📊 Upload Visual Report
         if: always()
@@ -119,3 +135,4 @@ jobs:
         with:
           name: cyberpunk-salesforce-playwright-report
           path: playwright-report/
+          if-no-files-found: warn

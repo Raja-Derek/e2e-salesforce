@@ -41,6 +41,7 @@ export const ROUTES = {
   signIn: '/sign-in',
   dashboard: /dashboard/,
   products: '/products',
+  prospects: '/prospects',
   customer: '/customer',
   kunjungan: '/transaksi/kunjungan',
   aktivitas: '/transaksi/aktivitas',

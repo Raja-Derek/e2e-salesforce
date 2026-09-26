@@ -108,6 +108,51 @@ export const DATA_AKTIVITAS_EDIT = {
   detail: 'edit',
 } as const;
 
+export const DATA_PROSPECT_MAP = {
+  org: 'map',
+  amount: '100.0000',
+  title: 'AUTO PROSPECT',
+  // Label tanggal sesuai aria-label kalender; sesuaikan bila berganti bulan.
+  startDateLabel: 'Tuesday, September 1st,',
+  endDateLabel: 'Friday, September 4th,',
+  dueDateLabel: 'Saturday, September 5th,',
+} as const;
+
+export const DATA_PROSPECT_MAP_EDIT = {
+  amount: '211.1111',
+  period: '7 Hari',
+  title: 'AUTO PROSPECT EDIT',
+  amountText: 'Rp 2.111.111',
+  periodText: 'Satuan: 7 Hari',
+} as const;
+
+export const DATA_PROSPECT_MAP_DEALS = {
+  receiptDateLabel: 'Saturday, September 5th,',
+  // Nomor kwitansi digenerate otomatis per run (DDMM + 3 angka acak),
+  // jadi tidak dihardcode di sini. Lihat uniqueReceiptNumber().
+  // Ganti ke file fixture repo bila sudah ada, mis. 'tests/fixtures/files/kwitansi.jpg'.
+  receiptFilePath: 'tests/fixtures/files/kwitansi.jpeg',
+} as const;
+
+// TODO: isi setelah cek UI dev untuk org Crane & Derek.
+export const DATA_PROSPECT_CRANE = {
+  org: 'crane',
+  amount: '100.0000',
+  title: 'AUTO PROSPECT CRANE',
+  startDateLabel: 'Tuesday, September 1st,',
+  endDateLabel: 'Friday, September 4th,',
+  dueDateLabel: 'Saturday, September 5th,',
+} as const;
+
+export const DATA_PROSPECT_DEREK = {
+  org: 'derek',
+  amount: '100.0000',
+  title: 'AUTO PROSPECT DEREK',
+  startDateLabel: 'Tuesday, September 1st,',
+  endDateLabel: 'Friday, September 4th,',
+  dueDateLabel: 'Saturday, September 5th,',
+} as const;
+
 /** Teks UI yang dipakai untuk assertion. Diupdate di satu tempat jika copy berubah. */
 export const UI_TEXT = {
   loginFailed: 'Email atau kata sandi salah',
@@ -157,4 +202,15 @@ export const UI_TEXT = {
   deleteActivityConfirm: 'Hapus Aktivitas?',
   deleteActivityConfirmButton: 'Ya, Hapus',
   activityDeleted: 'Aktivitas dihapus',
+  addProspectDialog: 'Tambah Prospect',
+  editProspectDialog: 'Edit Prospect',
+  updateProspectStatusDialog: 'Update Status Prospect',
+  saveProspectConfirm: 'Simpan?',
+  updateProspectConfirm: 'Update?',
+  prospectCreated: 'Prospect berhasil ditambahkan',
+  prospectUpdated: 'Perubahan berhasil disimpan',
+  receiptDetailHeading: 'Detail Kwitansi',
+  deleteProspectConfirm: 'Hapus Prospect?',
+  deleteProspectConfirmButton: 'Ya, Hapus',
+  prospectDeleted: 'Data berhasil dihapus',
 } as const;
