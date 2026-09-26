@@ -42,4 +42,6 @@ export const ROUTES = {
   dashboard: /dashboard/,
   products: '/products',
   customer: '/customer',
+  kunjungan: '/transaksi/kunjungan',
+  aktivitas: '/transaksi/aktivitas',
 } as const;

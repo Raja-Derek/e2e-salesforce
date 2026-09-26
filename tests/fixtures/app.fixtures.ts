@@ -2,6 +2,8 @@ import { test as base } from '@playwright/test';
 import { LoginPage } from '../pages/loginPage';
 import { ProductPage } from '../pages/productPage';
 import { CustomerPage } from '../pages/customerPage';
+import { KunjunganPage } from '../pages/kunjunganPage';
+import { ActivityPage } from '../pages/activityPage';
 
 /**
  * Fixture aplikasi.
@@ -18,6 +20,8 @@ type AppFixtures = {
   loginPage: LoginPage;
   productPage: ProductPage;
   customerPage: CustomerPage;
+  kunjunganPage: KunjunganPage;
+  activityPage: ActivityPage;
 };
 
 export const test = base.extend<AppFixtures>({
@@ -29,6 +33,12 @@ export const test = base.extend<AppFixtures>({
   },
   customerPage: async ({ page }, use) => {
     await use(new CustomerPage(page));
+  },
+  kunjunganPage: async ({ page }, use) => {
+    await use(new KunjunganPage(page));
+  },
+  activityPage: async ({ page }, use) => {
+    await use(new ActivityPage(page));
   },
 });
 

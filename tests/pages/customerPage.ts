@@ -119,6 +119,7 @@ export class CustomerPage extends BasePage {
     await test.step('Buka halaman Customer', async () => {
       await this.gotoPath(this.customerUrl);
       await this.expectLoaded();
+      await this.page.waitForTimeout
     });
   }
 
