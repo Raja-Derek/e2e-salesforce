@@ -23,7 +23,7 @@ test.describe.configure({ retries: 1 });
 function uniqueToken(): string {
   const time = Date.now().toString(5);
   const random = Math.random().toString(5).slice(2, 5);
-  return `${random}`;
+  return `${time}${random}`;
 }
 
 /** Nomor HP numerik 11 digit (format 08xxxxxxxxx) dengan 9 digit acak. */
