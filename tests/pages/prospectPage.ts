@@ -348,7 +348,7 @@ export class ProspectPage extends BasePage {
             await this.common.saveChangesButton.click();
             await this.page.getByText('Menyimpan perubahan...').waitFor({ state: 'detached', timeout: TIMEOUTS.toast });
             await this.page.getByText('Update Status Prospect').waitFor({ state: 'detached', timeout: TIMEOUTS.toast });
-        });
+        }); 
     }
 
     async expectDealsSuccess(): Promise<void> {
