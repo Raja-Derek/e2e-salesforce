@@ -4,6 +4,7 @@ import { ProductPage } from '../pages/productPage';
 import { CustomerPage } from '../pages/customerPage';
 import { KunjunganPage } from '../pages/kunjunganPage';
 import { ActivityPage } from '../pages/activityPage';
+import { ProspectPage } from '../pages/prospectPage';
 
 /**
  * Fixture aplikasi.
@@ -22,6 +23,7 @@ type AppFixtures = {
   customerPage: CustomerPage;
   kunjunganPage: KunjunganPage;
   activityPage: ActivityPage;
+  prospectPage: ProspectPage;
 };
 
 export const test = base.extend<AppFixtures>({
@@ -39,6 +41,9 @@ export const test = base.extend<AppFixtures>({
   },
   activityPage: async ({ page }, use) => {
     await use(new ActivityPage(page));
+  },
+  prospectPage: async ({ page }, use) => {
+    await use(new ProspectPage(page));
   },
 });
 
