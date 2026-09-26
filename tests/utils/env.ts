@@ -43,4 +43,5 @@ export const ROUTES = {
   products: '/products',
   customer: '/customer',
   kunjungan: '/transaksi/kunjungan',
+  aktivitas: '/transaksi/aktivitas',
 } as const;

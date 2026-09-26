@@ -96,6 +96,18 @@ export const DATA_KUNJUNGAN_SELESAI = {
   result: 'test',
 } as const;
 
+export const DATA_AKTIVITAS = {
+  customerName: 'Crane Auto',
+  subject: 'MEETING',
+  type: 'Meeting',
+  status: 'Pending',
+} as const;
+
+export const DATA_AKTIVITAS_EDIT = {
+  subject: 'MEETING EDIT',
+  detail: 'edit',
+} as const;
+
 /** Teks UI yang dipakai untuk assertion. Diupdate di satu tempat jika copy berubah. */
 export const UI_TEXT = {
   loginFailed: 'Email atau kata sandi salah',
@@ -136,4 +148,13 @@ export const UI_TEXT = {
   visitDeleted: 'Berhasil menghapus kunjungan',
   visitUpdated: 'Berhasil mengubah kunjungan',
   visitStatusPending: 'Pending',
+  addActivityDialog: 'Tambah Aktivitas Baru',
+  saveActivityConfirm: 'Simpan Aktivitas?',
+  activitySaved: 'Aktivitas berhasil disimpan',
+  editActivityDialog: 'Edit Aktivitas',
+  updateActivityConfirm: 'Update Aktivitas?',
+  activityUpdated: 'Aktivitas diperbarui',
+  deleteActivityConfirm: 'Hapus Aktivitas?',
+  deleteActivityConfirmButton: 'Ya, Hapus',
+  activityDeleted: 'Aktivitas dihapus',
 } as const;
