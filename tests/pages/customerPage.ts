@@ -88,6 +88,10 @@ export class CustomerPage extends BasePage {
     return this.page.getByRole('row', { name: new RegExp(escapeRegExp(customerName), 'i') });
   }
 
+  rowCustomerName(): Locator {
+    return this.page.locator('[data-test="customer-name"]');
+  }
+
   /**
    * Tombol menu aksi di baris tabel.
    * Scoping per baris ini penting: suffix-nya UUID unik per record,
@@ -133,6 +137,8 @@ export class CustomerPage extends BasePage {
   async search(customerName: string): Promise<void> {
     await test.step(`Cari customer "${customerName}"`, async () => {
       await this.searchInput.fill(customerName);
+      await this.searchInput.press('Enter');
+      await this.page.waitForTimeout(5000); // Tunggu render tabel selesai (agar row bisa diklik)
       await expect(this.rowFor(customerName)).toBeVisible({ timeout: TIMEOUTS.list });
     });
   }
@@ -278,7 +284,8 @@ export class CustomerPage extends BasePage {
 
   async openDetail(customerName: string): Promise<void> {
     await test.step(`Buka detail customer "${customerName}"`, async () => {
-      await this.rowFor(customerName).click();
+      await expect(this.rowFor(customerName)).toBeVisible({ timeout: TIMEOUTS.list });
+      await this.rowCustomerName().click()
       await expect(this.detailDialog(customerName)).toBeVisible({ timeout: TIMEOUTS.dialog });
     });
   }

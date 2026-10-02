@@ -21,9 +21,16 @@ test.describe.configure({ retries: 1 });
  * suffix kembar kalau hanya mengandalkan timestamp.
  */
 function uniqueToken(): string {
-  const time = Date.now().toString(5);
+  const today = new Date();
+
+  // Extract components and pad with leading zeros if needed
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0
+  const yy = String(today.getFullYear()).slice(-2); // Get last 2 digits
+
+  const formattedDate = `${dd}${mm}${yy}`;
   const random = Math.random().toString(5).slice(2, 5);
-  return `${time}${random}`;
+  return `${formattedDate}${random}`;
 }
 
 /** Nomor HP numerik 11 digit (format 08xxxxxxxxx) dengan 9 digit acak. */
@@ -33,6 +40,17 @@ function uniquePhone(): string {
 }
 
 function newCompanyCustomer(): CustomerData {
+  const suffix = uniqueToken();
+  return {
+    ...DATA_CUSTOMER,
+    companyName: `${DATA_CUSTOMER.companyName} ${suffix}`,
+    contactName: `${DATA_CUSTOMER.contactName} ${suffix}`,
+    phone: uniquePhone(),
+    email: `playwright.${suffix}@test.com`,
+  };
+}
+
+function updatedCompanyCustomer(): CustomerData {
   const suffix = uniqueToken();
   return {
     ...DATA_CUSTOMER,
@@ -54,12 +72,14 @@ function newPersonalCustomer(): PersonalCustomerData {
 }
 
 test.describe.serial('Customer Perusahaan', { tag: '@perusahaan' }, () => {
+  const customer = newCompanyCustomer();
+  const updatedCustomer = updatedCompanyCustomer();
+
   test.beforeEach(async ({ customerPage }) => {
     await customerPage.goto();
   });
 
   test('membuat customer perusahaan lalu verifikasi detail kontak', async ({ customerPage }) => {
-    const customer = newCompanyCustomer();
 
     await customerPage.openCreateDialog();
     await customerPage.fillCreateForm(customer);
@@ -70,58 +90,40 @@ test.describe.serial('Customer Perusahaan', { tag: '@perusahaan' }, () => {
     await customerPage.openDetail(customer.companyName);
     await customerPage.expectContactDetailVisible(customer);
     await customerPage.closeDetail();
-
-    await customerPage.search(customer.companyName);
-    await customerPage.deleteFor(customer.companyName);
-    await customerPage.expectDeleteSuccess();
   });
 
   test('mengedit customer perusahaan lalu verifikasi detail kontak', async ({ customerPage }) => {
-    const customer = newCompanyCustomer();
-    const updated = newCompanyCustomer();
-
-    await customerPage.openCreateDialog();
-    await customerPage.fillCreateForm(customer);
-    await customerPage.saveAndConfirmCreate();
 
     await customerPage.search(customer.companyName);
     await customerPage.openEditFor(customer.companyName);
-    await customerPage.fillEditForm(updated);
+    await customerPage.fillEditForm(  updatedCustomer);
     await customerPage.saveEditAndConfirm();
-    await customerPage.search(updated.companyName);
-    await customerPage.expectUpdateSuccess(updated.companyName);
+    await customerPage.search(updatedCustomer.companyName);
+    await customerPage.expectUpdateSuccess(updatedCustomer.companyName);
 
-    await customerPage.openDetail(updated.companyName);
-    await customerPage.expectContactDetailVisible(updated);
+    await customerPage.openDetail(updatedCustomer.companyName);
+    await customerPage.expectContactDetailVisible(updatedCustomer);
     await customerPage.closeDetail();
 
-    await customerPage.search(updated.companyName);
-    await customerPage.deleteFor(updated.companyName);
-    await customerPage.expectDeleteSuccess();
   });
 
   test('menghapus customer perusahaan lalu verifikasi tidak tampil di tabel', async ({
     customerPage,
   }) => {
-    const customer = newCompanyCustomer();
 
-    await customerPage.openCreateDialog();
-    await customerPage.fillCreateForm(customer);
-    await customerPage.saveAndConfirmCreate();
-
-    await customerPage.search(customer.companyName);
-    await customerPage.deleteFor(customer.companyName);
+    await customerPage.search(updatedCustomer.companyName);
+    await customerPage.deleteFor(updatedCustomer.companyName);
     await customerPage.expectDeleteSuccess();
   });
 });
 
 test.describe.serial('Customer Perorangan', { tag: '@personal' }, () => {
+  const customer = newPersonalCustomer();
   test.beforeEach(async ({ customerPage }) => {
     await customerPage.goto();
   });
 
   test('membuat customer perorangan lalu verifikasi detail kontak', async ({ customerPage }) => {
-    const customer = newPersonalCustomer();
 
     await customerPage.openCreateDialog();
     await customerPage.selectPersonalType();
@@ -134,19 +136,10 @@ test.describe.serial('Customer Perorangan', { tag: '@personal' }, () => {
     await customerPage.expectPersonalDetailVisible(customer);
     await customerPage.closeDetail();
 
-    await customerPage.search(customer.contactName);
-    await customerPage.deleteFor(customer.contactName);
-    await customerPage.expectDeleteSuccess();
   });
 
   test('mengedit customer perorangan lalu verifikasi detail kontak', async ({ customerPage }) => {
-    const customer = newPersonalCustomer();
     const updated = newPersonalCustomer();
-
-    await customerPage.openCreateDialog();
-    await customerPage.selectPersonalType();
-    await customerPage.fillPersonalCreateForm(customer);
-    await customerPage.saveAndConfirmCreate();
 
     await customerPage.search(customer.contactName);
     await customerPage.openEditFor(customer.contactName);
@@ -159,20 +152,11 @@ test.describe.serial('Customer Perorangan', { tag: '@personal' }, () => {
     await customerPage.expectPersonalDetailVisible(updated);
     await customerPage.closeDetail();
 
-    await customerPage.search(updated.contactName);
-    await customerPage.deleteFor(updated.contactName);
-    await customerPage.expectDeleteSuccess();
   });
 
   test('menghapus customer perorangan lalu verifikasi tidak tampil di tabel', async ({
     customerPage,
   }) => {
-    const customer = newPersonalCustomer();
-
-    await customerPage.openCreateDialog();
-    await customerPage.selectPersonalType();
-    await customerPage.fillPersonalCreateForm(customer);
-    await customerPage.saveAndConfirmCreate();
 
     await customerPage.search(customer.contactName);
     await customerPage.deleteFor(customer.contactName);
