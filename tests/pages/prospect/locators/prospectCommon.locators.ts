@@ -19,6 +19,7 @@ export function getProspectCommonLocators(page: Page) {
     createDialog,
     orgCombobox: page.getByRole('combobox').filter({ hasText: 'Pilih Organisasi' }),
     customerCombobox: page.getByRole('combobox', { name: 'Pelanggan *' }),
+    customerSearchInput: page.getByRole('textbox', { name: 'Cari nama/perusahaan' }),
     suggestionListbox: page.getByRole('listbox', { name: 'Suggestions' }),
     categoryCombobox: page.getByRole('combobox').filter({ hasText: 'Pilih Kategori...' }),
     productCombobox: page.getByRole('combobox', { name: 'Produk / Layanan *' }),
@@ -27,6 +28,10 @@ export function getProspectCommonLocators(page: Page) {
     amountInput: page.getByRole('textbox', { name: '0' }),
     titleInput: page.getByRole('textbox', { name: 'Judul' }),
     periodInput: page.getByRole('textbox', { name: 'Periode Paket Rentang Waktu' }),
+    // Field khusus form Towing (tanpa "*" agar cocok untuk "Rute Akhir" / "Rute Akhir *").
+    vehicleInput: page.getByRole('textbox', { name: 'Kendaraan yang Diangkut' }),
+    routeStartInput: page.getByRole('textbox', { name: 'Rute Awal' }),
+    routeEndInput: page.getByRole('textbox', { name: 'Rute Akhir' }),
     /**
      * Tombol tanggal di dalam dialog "Tambah Prospect", terurut sesuai layout form:
      * nth(0) = Periode Awal, nth(1) = Periode Akhir, nth(2) = Target Closing.
@@ -65,6 +70,8 @@ export function getProspectCommonLocators(page: Page) {
     receiptHeading: page.getByRole('heading', { name: 'Detail Kwitansi' }),
     paidButton: page.getByRole('button', { name: 'Lunas' }),
     receiptNumberInput: page.getByRole('textbox', { name: 'Masukkan No. Kwitansi...' }),
+    // Form Towing memakai "Masukkan angka..." untuk No. Kwitansi.
+    receiptNumberAltInput: page.getByRole('textbox', { name: 'Masukkan angka' }),
     fileInput: page.locator('input[type="file"]'),
     removeFileButton: page.getByRole('button', { name: 'Hapus file' }),
     saveChangesButton: page.getByRole('button', { name: 'Simpan Perubahan' }),

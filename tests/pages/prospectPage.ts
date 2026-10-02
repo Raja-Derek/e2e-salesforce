@@ -9,7 +9,7 @@ import {
     prospectRowContaining,
     type ProspectOrg,
 } from './prospect/locators';
-import type { ProspectCreateData, ProspectDealsData, ProspectEditData } from '../types/prospect';
+import type { ProspectCreateData, ProspectDealsData, ProspectEditData, ProspectTowingCreateData, ProspectTowingEditData } from '../types/prospect';
 
 /**
  * Page Object untuk menu Prospect (/prospects).
@@ -80,19 +80,28 @@ export class ProspectPage extends BasePage {
     }
 
     async selectCustomer(org: ProspectOrg): Promise<void> {
-        const { customerOption } = this.orgLocators(org);
+        const { customerOption, meta } = this.orgLocators(org);
         await test.step(`Pilih pelanggan org "${org}"`, async () => {
             await this.common.customerCombobox.click();
-            await expect(this.common.suggestionListbox).toBeVisible({ timeout: TIMEOUTS.dialog });
+            // Ketik di kolom pencarian bila ada (daftar customer panjang),
+            // lalu pilih opsinya. Aman untuk org tanpa kolom cari.
+            if (await this.common.customerSearchInput.isVisible()) {
+                await this.common.customerSearchInput.fill(meta.customerName);
+            }
+            await expect(customerOption).toBeVisible({ timeout: TIMEOUTS.dialog });
             await customerOption.click();
             await expect(this.common.createDialog).toBeVisible({ timeout: TIMEOUTS.dialog });
         });
     }
 
     async selectCategory(org: ProspectOrg): Promise<void> {
-        const { categoryOption } = this.orgLocators(org);
-        const categoryName = this.orgLocators(org).meta.categoryName;
-        await test.step(`Pilih kategori "${categoryName}"`, async () => {
+        const loc = this.orgLocators(org);
+        if (!('categoryOption' in loc)) {
+            throw new Error(`Organisasi "${org}" tidak punya pilihan kategori.`);
+        }
+        const { categoryOption } = loc;
+        const meta = loc.meta as { categoryName: string };
+        await test.step(`Pilih kategori "${meta.categoryName}"`, async () => {
             await this.common.categoryCombobox.click();
             await expect(categoryOption).toBeVisible({ timeout: TIMEOUTS.dialog });
             await categoryOption.click();
@@ -181,6 +190,16 @@ export class ProspectPage extends BasePage {
     }
 
     /**
+     * Pilih tanggal untuk form satu-tanggal (Towing):
+     * memakai date-button pertama di dialog Tambah Prospect.
+     */
+    async pickTanggal(dateLabel: string): Promise<void> {
+        await test.step(`Pilih tanggal "${dateLabel}"`, async () => {
+            await this.pickDateFromButton(this.dialogDateButton(0), dateLabel);
+        });
+    }
+
+    /**
      * Isi nominal & judul. Judul dibuat unik per run (base + 3 angka acak)
      * agar tidak konflik antar run. Mengembalikan judul aktual.
      */
@@ -188,6 +207,22 @@ export class ProspectPage extends BasePage {
         const title = uniqueProspectTitle(data.title);
         await test.step(`Isi form prospect "${title}"`, async () => {
             await this.common.amountInput.fill(data.amount);
+            await this.common.titleInput.fill(title);
+        });
+        return title;
+    }
+
+    /**
+     * Isi form create Towing: kendaraan, nominal, rute awal/akhir, judul.
+     * Judul dibuat unik per run. Mengembalikan judul aktual.
+     */
+    async fillTowingCreateForm(data: ProspectTowingCreateData): Promise<string> {
+        const title = uniqueProspectTitle(data.title);
+        await test.step(`Isi form prospect towing "${title}"`, async () => {
+            await this.common.vehicleInput.fill(data.vehicle);
+            await this.common.amountInput.fill(data.amount);
+            await this.common.routeStartInput.fill(data.routeStart);
+            await this.common.routeEndInput.fill(data.routeEnd);
             await this.common.titleInput.fill(title);
         });
         return title;
@@ -276,6 +311,30 @@ export class ProspectPage extends BasePage {
         return title;
     }
 
+    /** Ganti produk di dalam dialog Edit Prospect (mis. Hidrolik -> Gantung). */
+    async selectProductInEdit(productName: string): Promise<void> {
+        await test.step(`Ganti produk menjadi "${productName}"`, async () => {
+            await this.common.productCombobox.click();
+            await expect(this.common.suggestionListbox).toBeVisible({ timeout: TIMEOUTS.dialog });
+            await this.common.editDialog.getByText(productName).click();
+            await expect(this.common.editDialog).toBeVisible({ timeout: TIMEOUTS.dialog });
+        });
+    }
+
+    /**
+     * Ubah form edit Towing: kendaraan, nominal, judul.
+     * Judul juga dibuat unik. Mengembalikan judul aktual.
+     */
+    async fillTowingEditForm(data: ProspectTowingEditData): Promise<string> {
+        const title = uniqueProspectTitle(data.title);
+        await test.step(`Ubah form prospect towing menjadi "${title}"`, async () => {
+            await this.common.vehicleInput.fill(data.vehicle);
+            await this.common.amountInput.fill(data.amount);
+            await this.common.titleInput.fill(title);
+        });
+        return title;
+    }
+
     async saveEditAndConfirm(): Promise<void> {
         await test.step('Simpan perubahan dan konfirmasi update', async () => {
             await this.common.updateButton.click();
@@ -294,6 +353,18 @@ export class ProspectPage extends BasePage {
                 timeout: TIMEOUTS.list,
             });
             await expect(this.page.getByText(periodText)).toBeVisible({ timeout: TIMEOUTS.list });
+        });
+    }
+
+    async expectTowingEditSuccess(title: string, amountText: string, vehicleText: string): Promise<void> {
+        await test.step(`Perubahan prospect towing "${title}" tersimpan`, async () => {
+            await expect(this.page.getByRole('heading', { name: title })).toBeVisible({
+                timeout: TIMEOUTS.list,
+            });
+            await expect(this.page.getByText(amountText, { exact: true })).toBeVisible({
+                timeout: TIMEOUTS.list,
+            });
+            await expect(this.page.getByText(vehicleText)).toBeVisible({ timeout: TIMEOUTS.list });
         });
     }
 
@@ -336,11 +407,28 @@ export class ProspectPage extends BasePage {
             await this.closeAllCalendars();
             await expect(this.common.updateStatusDialog).toBeVisible({ timeout: TIMEOUTS.dialog });
             await this.page.getByRole('button', { name: 'Lunas' }).click();
-            await this.common.receiptNumberInput.fill(receiptNumber);
+            // Towing memakai "Masukkan angka...", org lain "Masukkan No. Kwitansi...".
+            if (await this.common.receiptNumberInput.isVisible()) {
+                await this.common.receiptNumberInput.fill(receiptNumber);
+            } else {
+                await this.common.receiptNumberAltInput.fill(receiptNumber);
+            }
             await this.common.fileInput.setInputFiles(data.receiptFilePath);
             await expect(this.common.removeFileButton).toBeVisible({ timeout: TIMEOUTS.dialog });
         });
         return receiptNumber;
+    }
+
+    /** Pilih kota di detail kwitansi Towing (combobox pertama di dialog). */
+    async selectReceiptCity(cityName: string): Promise<void> {
+        await test.step(`Pilih kota kwitansi "${cityName}"`, async () => {
+            await this.common.updateStatusDialog.getByRole('combobox').first().click();
+            await expect(this.page.getByRole('option', { name: cityName })).toBeVisible({
+                timeout: TIMEOUTS.dialog,
+            });
+            await this.page.getByRole('option', { name: cityName }).click();
+            await expect(this.common.updateStatusDialog).toBeVisible({ timeout: TIMEOUTS.dialog });
+        });
     }
 
     async saveStatusAndConfirm(): Promise<void> {

@@ -108,14 +108,45 @@ export const DATA_AKTIVITAS_EDIT = {
   detail: 'edit',
 } as const;
 
+/**
+ * Label tanggal sesuai aria-label kalender (react-day-picker),
+ * mis. "Thursday, October 1st,".
+ *
+ * Hari (weekday) & bulan dibaca otomatis dari kalender berjalan
+ * (bulan & tahun ini), sedangkan angka tanggalnya diatur manual
+ * lewat argumen `day`. Jadi tiap ganti bulan tidak perlu ubah
+ * testData — cukup sesuaikan angka tanggalnya saja.
+ */
+function calendarDateLabel(day: number, now: Date = new Date()): string {
+  const date = new Date(now.getFullYear(), now.getMonth(), day);
+  const weekday = date.toLocaleDateString('en-US', { weekday: 'long' });
+  const month = date.toLocaleDateString('en-US', { month: 'long' });
+  return `${weekday}, ${month} ${day}${ordinalSuffix(day)},`;
+}
+
+/** Contoh: 1 -> "st", 2 -> "nd", 3 -> "rd", 11/12/13 -> "th". */
+function ordinalSuffix(day: number): string {
+  if (day >= 11 && day <= 13) return 'th';
+  switch (day % 10) {
+    case 1:
+      return 'st';
+    case 2:
+      return 'nd';
+    case 3:
+      return 'rd';
+    default:
+      return 'th';
+  }
+}
+
 export const DATA_PROSPECT_MAP = {
   org: 'map',
   amount: '100.0000',
   title: 'AUTO PROSPECT',
-  // Label tanggal sesuai aria-label kalender; sesuaikan bila berganti bulan.
-  startDateLabel: 'Tuesday, September 1st,',
-  endDateLabel: 'Friday, September 4th,',
-  dueDateLabel: 'Saturday, September 5th,',
+  // Angka tanggal diatur manual; hari & bulan mengikuti bulan berjalan.
+  startDateLabel: calendarDateLabel(1),
+  endDateLabel: calendarDateLabel(4),
+  dueDateLabel: calendarDateLabel(5),
 } as const;
 
 export const DATA_PROSPECT_MAP_EDIT = {
@@ -127,30 +158,47 @@ export const DATA_PROSPECT_MAP_EDIT = {
 } as const;
 
 export const DATA_PROSPECT_MAP_DEALS = {
-  receiptDateLabel: 'Saturday, September 5th,',
+  receiptDateLabel: calendarDateLabel(5),
   // Nomor kwitansi digenerate otomatis per run (DDMM + 3 angka acak),
   // jadi tidak dihardcode di sini. Lihat uniqueReceiptNumber().
   // Ganti ke file fixture repo bila sudah ada, mis. 'tests/fixtures/files/kwitansi.jpg'.
   receiptFilePath: 'tests/fixtures/files/kwitansi.jpeg',
 } as const;
 
-// TODO: isi setelah cek UI dev untuk org Crane & Derek.
+// TODO: isi nilai katalog (kategori/produk) Crane setelah cek UI dev.
 export const DATA_PROSPECT_CRANE = {
   org: 'crane',
   amount: '100.0000',
   title: 'AUTO PROSPECT CRANE',
-  startDateLabel: 'Tuesday, September 1st,',
-  endDateLabel: 'Friday, September 4th,',
-  dueDateLabel: 'Saturday, September 5th,',
+  startDateLabel: calendarDateLabel(1),
+  endDateLabel: calendarDateLabel(4),
+  dueDateLabel: calendarDateLabel(5),
 } as const;
 
 export const DATA_PROSPECT_DEREK = {
   org: 'derek',
-  amount: '100.0000',
-  title: 'AUTO PROSPECT DEREK',
-  startDateLabel: 'Tuesday, September 1st,',
-  endDateLabel: 'Friday, September 4th,',
-  dueDateLabel: 'Saturday, September 5th,',
+  amount: '55.0000',
+  vehicle: 'ROBOT JAZZ',
+  routeStart: 'KONOHA',
+  routeEnd: 'INAGAKUREP',
+  title: 'PENDEREKAN DESA KONOHA',
+  // Form Towing hanya punya satu tanggal; angka diatur manual.
+  dateLabel: calendarDateLabel(2),
+} as const;
+
+export const DATA_PROSPECT_DEREK_EDIT = {
+  amount: '45.0000',
+  vehicle: 'ROBOT JAZZ RS',
+  title: 'PENDEREKAN DESA KONOHA EDIT',
+  amountText: 'Rp 450.000',
+  vehicleText: 'Kendaraan: ROBOT JAZZ RS',
+} as const;
+
+export const DATA_PROSPECT_DEREK_DEALS = {
+  receiptDateLabel: calendarDateLabel(2),
+  // Nomor kwitansi digenerate otomatis per run (DDMM + 3 angka acak),
+  // jadi tidak dihardcode di sini. Lihat uniqueReceiptNumber().
+  receiptFilePath: 'tests/fixtures/files/kwitansi.jpeg',
 } as const;
 
 /** Teks UI yang dipakai untuk assertion. Diupdate di satu tempat jika copy berubah. */
