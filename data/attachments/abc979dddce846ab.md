@@ -1,0 +1,450 @@
+# Page snapshot
+
+```yaml
+- generic:
+  - generic:
+    - complementary:
+      - generic:
+        - button:
+          - img
+        - generic:
+          - generic:
+            - img
+            - generic:
+              - generic: Salesforce
+              - generic: Management
+        - generic:
+          - generic:
+            - paragraph: Main Menu
+          - link:
+            - /url: /dashboard
+            - generic:
+              - img
+            - generic: Dashboard
+          - link:
+            - /url: /customer
+            - generic:
+              - img
+            - generic: Customer
+          - generic:
+            - button:
+              - generic:
+                - generic:
+                  - img
+                - generic: Manajemen Prospect
+              - img
+            - generic:
+              - link:
+                - /url: /transaksi/kunjungan
+                - text: Kunjungan
+              - link:
+                - /url: /transaksi/aktivitas
+                - text: Aktivitas
+              - link:
+                - /url: /prospects
+                - text: Prospects
+              - link:
+                - /url: /transaksi/penjualan
+                - text: Transaksi
+          - generic:
+            - button:
+              - generic:
+                - generic:
+                  - img
+                - generic: Manajemen Quotation
+              - img
+          - link:
+            - /url: /prospectpool
+            - generic:
+              - img
+            - generic: Prospect Pool
+          - link:
+            - /url: /products
+            - generic:
+              - img
+            - generic: Produk
+          - link:
+            - /url: /kpi
+            - generic:
+              - img
+            - generic: Target Sales
+          - link:
+            - /url: /leaderboard
+            - generic:
+              - img
+            - generic: Leaderboard
+          - generic:
+            - button:
+              - generic:
+                - generic:
+                  - img
+                - generic: Kelola User
+              - img
+    - main:
+      - generic:
+        - generic:
+          - heading [level=1]: Halo, Robot
+        - generic:
+          - button:
+            - img
+          - button:
+            - generic:
+              - img
+            - generic:
+              - generic: Robot Playwright
+              - generic: robot@lcc.com
+            - img
+      - generic:
+        - generic:
+          - generic:
+            - button:
+              - img
+              - text: Kembali ke daftar prospect
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - img
+                    - generic:
+                      - heading [level=1]: Towing Auto
+                      - generic:
+                        - img
+                        - generic: Toto • CEO
+                      - heading [level=1]: PENDEREKAN DESA KONOHA 902
+                  - generic:
+                    - generic:
+                      - button:
+                        - img
+                        - text: Hapus
+                      - button:
+                        - img
+                        - text: Edit Prospect
+                      - button:
+                        - img
+                        - text: Update Status
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic: Kunjungan
+                      - generic:
+                        - generic: Committed
+                      - generic:
+                        - generic: Deals
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img
+                      - generic:
+                        - generic:
+                          - img
+                          - paragraph: Est. Value
+                        - paragraph: Rp 550.000
+                    - generic:
+                      - generic:
+                        - img
+                      - generic:
+                        - generic:
+                          - img
+                          - paragraph: Target Close
+                        - paragraph: 2 Okt 2026
+                    - generic:
+                      - generic:
+                        - img
+                      - generic:
+                        - generic:
+                          - img
+                          - paragraph: Actual Close
+                        - paragraph: "-"
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - img
+                    - generic:
+                      - heading [level=3]: Deal Information
+                      - paragraph: Ringkasan detail kesepakatan
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img
+                        - generic: Dibuat Tanggal
+                      - generic: 3 Oktober 2026
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img
+                        - generic: Sales
+                      - generic: Robot Playwright
+                    - generic:
+                      - generic:
+                        - img
+                        - generic: Produk yang diminati
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - paragraph: Derek Hidrolik
+                              - generic: Qty 1
+                            - generic:
+                              - paragraph: "Deskripsi: Derek Hidrolik"
+                              - paragraph: "No. Kwitansi: -"
+                              - paragraph:
+                                - generic: "Kendaraan:"
+                                - text: ROBOT JAZZ
+                              - paragraph:
+                                - generic: "Rute Awal:"
+                                - text: KONOHA
+                              - paragraph:
+                                - generic: "Rute Akhir:"
+                                - text: INAGAKUREP
+                              - paragraph:
+                                - generic: "Harga:"
+                                - text: Rp 550.000
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img
+                          - generic: Pembayaran
+                          - generic: Belum Dibayar
+                        - text: "- Belum ada pembayaran tercatat -"
+                        - button:
+                          - img
+                          - text: Upload Kwitansi Pembayaran
+                    - generic:
+                      - generic:
+                        - img
+                        - generic: Notes
+                      - generic:
+                        - generic:
+                          - generic: Tidak ada catatan tambahan.
+                - generic:
+                  - tablist:
+                    - tab [selected]:
+                      - img
+                      - generic: Aktivitas
+                    - tab:
+                      - img
+                      - generic: Kunjungan
+                  - tabpanel:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - heading [level=3]: Riwayat Aktivitas
+                            - paragraph: Halaman 1 dari 1
+                          - button:
+                            - img
+                            - text: Tambah Aktivitas
+                        - generic:
+                          - generic:
+                            - img
+                          - paragraph: Belum ada aktivitas
+                          - paragraph: Buat jadwal meeting, log panggilan, atau tugas baru untuk memulai.
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - img
+                    - generic:
+                      - paragraph: Contact Person
+                      - paragraph: Informasi PIC customer
+                  - generic:
+                    - generic:
+                      - generic: T
+                    - paragraph: Toto
+                    - paragraph: CEO
+  - alert: Halo, Robot
+  - dialog:
+    - generic:
+      - generic:
+        - heading [level=2]: Edit Prospect
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - img
+            - heading [level=3]: Informasi Pelanggan
+          - generic:
+            - generic:
+              - generic:
+                - text: Pelanggan
+                - generic: "*"
+              - combobox [disabled]:
+                - generic:
+                  - img
+                  - text: Towing Auto
+                - img
+            - generic:
+              - generic: Nama Kontak (PIC)
+              - textbox [disabled]:
+                - /placeholder: Pilih pelanggan...
+                - text: Toto
+          - generic:
+            - generic:
+              - generic: Jabatan
+              - textbox [disabled]:
+                - /placeholder: "-"
+                - text: CEO
+            - generic:
+              - generic: Email
+              - textbox [disabled]:
+                - /placeholder: "-"
+                - text: toto@gmail.com
+            - generic:
+              - generic: Telepon
+              - textbox [disabled]:
+                - /placeholder: "-"
+                - text: "08737373739"
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - img
+              - heading [level=3]: Daftar Produk & Layanan
+            - generic: "Total Item: 1"
+          - generic:
+            - generic:
+              - generic:
+                - generic: "Item #1"
+                - button [disabled]:
+                  - img
+                  - generic: Hapus
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - text: Produk / Layanan
+                      - generic: "*"
+                    - combobox [expanded]:
+                      - generic:
+                        - img
+                        - text: Derek Hidrolik
+                      - img
+                - generic:
+                  - generic:
+                    - generic:
+                      - text: Kendaraan yang Diangkut
+                      - generic: "*"
+                    - textbox:
+                      - /placeholder: "Contoh: Unit A"
+                      - text: ROBOT JAZZ
+                - generic:
+                  - generic:
+                    - generic:
+                      - text: Qty
+                      - generic: "*"
+                    - textbox:
+                      - /placeholder: "1"
+                      - text: "1"
+                - generic:
+                  - generic:
+                    - generic:
+                      - text: Harga Satuan
+                      - generic: "*"
+                    - generic:
+                      - generic: Rp
+                      - textbox:
+                        - /placeholder: "0"
+                        - text: "550.000"
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img
+                        - text: Rute Awal
+                        - generic: "*"
+                    - textbox:
+                      - /placeholder: Kota/Lokasi...
+                      - text: KONOHA
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img
+                        - text: Rute Akhir
+                    - textbox:
+                      - /placeholder: Kota/Lokasi Akhir...
+                      - text: INAGAKUREP
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img
+                        - text: Catatan Item
+                    - textbox:
+                      - /placeholder: TAMBAHKAN CATATAN DETAIL UNTUK ITEM INI...
+                      - text: Derek Hidrolik
+            - button:
+              - img
+              - text: Tambah Produk Baru
+        - generic:
+          - generic:
+            - img
+            - heading [level=3]: Detail Penawaran
+          - generic:
+            - generic:
+              - text: Judul
+              - generic: "*"
+            - textbox:
+              - /placeholder: "CONTOH: PENYEWAAN CRANE PROYEK XYZ"
+              - text: PENDEREKAN DESA KONOHA 902
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - text: Total Nilai (Rp)
+                  - generic: "*"
+                - generic: "*Otomatis"
+              - generic:
+                - generic: Rp
+                - textbox: "550.000"
+            - generic:
+              - generic: Status
+              - combobox:
+                - generic: Kunjungan
+                - img
+              - combobox
+            - generic:
+              - generic:
+                - text: Target Closing
+                - generic: "*"
+              - button:
+                - img
+                - text: 2026-10-02
+          - generic:
+            - generic: Catatan Tambahan
+            - textbox:
+              - /placeholder: TULIS DETAIL KEBUTUHAN...
+    - generic:
+      - generic:
+        - button: Batal
+        - button: Update Prospect
+    - button:
+      - img
+      - generic: Close
+  - dialog [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e5]:
+        - img [ref=e6]
+        - textbox "Cari produk..." [active] [ref=e9]
+      - listbox "Suggestions" [ref=e10]:
+        - group [ref=e12]:
+          - option "Derek Hidrolik DRK-01" [selected] [ref=e13] [cursor=pointer]:
+            - img
+            - generic [ref=e14]:
+              - generic [ref=e15]: Derek Hidrolik
+              - generic [ref=e16]: DRK-01
+          - option "Derek Gantung TOWING_GT" [ref=e17] [cursor=pointer]:
+            - img
+            - generic [ref=e18]:
+              - generic [ref=e19]: Derek Gantung
+              - generic [ref=e20]: TOWING_GT
+          - generic [ref=e22]: Semua data (2)
+```

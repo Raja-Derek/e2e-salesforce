@@ -1,0 +1,108 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - button [ref=e5]:
+          - img [ref=e6]
+        - generic [ref=e9]:
+          - img "Logo" [ref=e10]
+          - generic [ref=e11]:
+            - generic [ref=e12]: Salesforce
+            - generic [ref=e13]: Management
+        - generic [ref=e14]:
+          - paragraph [ref=e16]: Main Menu
+          - link "Dashboard" [ref=e17] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e19]
+            - generic [ref=e24]: Dashboard
+          - link "Customer" [ref=e25] [cursor=pointer]:
+            - /url: /customer
+            - img [ref=e27]
+            - generic [ref=e32]: Customer
+          - button "Manajemen Prospect" [ref=e34]:
+            - generic [ref=e35]:
+              - img [ref=e37]
+              - generic [ref=e39]: Manajemen Prospect
+            - img [ref=e40]
+          - button "Manajemen Quotation" [ref=e43]:
+            - generic [ref=e44]:
+              - img [ref=e46]
+              - generic [ref=e51]: Manajemen Quotation
+            - img [ref=e52]
+          - link "Prospect Pool" [ref=e54] [cursor=pointer]:
+            - /url: /prospectpool
+            - img [ref=e56]
+            - generic [ref=e61]: Prospect Pool
+          - link "Produk" [ref=e62] [cursor=pointer]:
+            - /url: /products
+            - img [ref=e64]
+            - generic [ref=e68]: Produk
+          - link "Target Sales" [ref=e69] [cursor=pointer]:
+            - /url: /kpi
+            - img [ref=e71]
+            - generic [ref=e75]: Target Sales
+          - link "Leaderboard" [ref=e76] [cursor=pointer]:
+            - /url: /leaderboard
+            - img [ref=e78]
+            - generic [ref=e84]: Leaderboard
+          - button "Kelola User" [ref=e86]:
+            - generic [ref=e87]:
+              - img [ref=e89]
+              - generic [ref=e101]: Kelola User
+            - img [ref=e102]
+    - main [ref=e104]:
+      - generic [ref=e105]:
+        - heading "Halo, Robot" [level=1] [ref=e107]
+        - generic [ref=e108]:
+          - button [ref=e109]:
+            - img
+          - button "Robot Playwright Robot Playwright robot@lcc.com" [ref=e111]:
+            - img "Robot Playwright" [ref=e113]
+            - generic [ref=e114]:
+              - generic [ref=e115]: Robot Playwright
+              - generic [ref=e116]: robot@lcc.com
+            - img [ref=e117]
+      - generic [ref=e121]:
+        - generic [ref=e122]:
+          - generic [ref=e123]:
+            - img [ref=e125]
+            - generic [ref=e130]:
+              - heading "Customers" [level=1] [ref=e131]
+              - paragraph [ref=e132]: Kelola data customer dan pantau riwayat prospect
+          - button "Tambah Customer" [ref=e134]:
+            - img
+            - text: Tambah Customer
+        - generic [ref=e135]:
+          - paragraph [ref=e136]: "Pilih Organisasi:"
+          - tablist [ref=e137]:
+            - tab "Crane Service Department" [selected] [ref=e138]
+            - tab "MAP" [ref=e139]
+            - tab "Towing Department" [ref=e140]
+        - generic [ref=e141]:
+          - generic [ref=e142]:
+            - generic [ref=e143]:
+              - generic [ref=e144]:
+                - img [ref=e145]
+                - textbox "Cari nama, email..." [active] [ref=e148]: Jamalution 031026231
+              - generic [ref=e149]:
+                - generic [ref=e150]: "0"
+                - text: Data
+            - generic [ref=e151]:
+              - combobox [ref=e152]:
+                - generic: Terbaru
+                - img
+              - combobox [ref=e153]:
+                - generic [ref=e154]: Filter by Owner
+                - img
+          - generic [ref=e155]:
+            - img [ref=e157]
+            - heading "Tidak ada data ditemukan" [level=3] [ref=e162]
+            - paragraph [ref=e163]: Belum ada customer yang sesuai dengan pencarian.
+            - button "Tambah Customer" [ref=e164]:
+              - img
+              - text: Tambah Customer
+  - alert [ref=e165]
+```
